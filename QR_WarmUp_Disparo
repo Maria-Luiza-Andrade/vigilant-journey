@@ -1,0 +1,71 @@
+SELECT TOP (
+    CASE 
+        WHEN DATEPART(DAY,GETDATE()) = 18 and DATEPART(MONTH,GETDATE()) = 7 THEN 9325
+        WHEN DATEPART(DAY,GETDATE()) = 19 and DATEPART(MONTH,GETDATE()) = 7 THEN 11325
+        WHEN DATEPART(DAY,GETDATE()) = 20 and DATEPART(MONTH,GETDATE()) = 7 THEN 14325
+        WHEN DATEPART(DAY,GETDATE()) = 21 and DATEPART(MONTH,GETDATE()) = 7 THEN 17907
+     ELSE 0 END)
+    G.ContactKey,
+    G.Email,
+    G.Id,
+    G.Name,
+    G.MobilePhone,
+    G.Phone
+ FROM
+   Warmup_Gmail G
+WHERE NOT EXISTS
+    (SELECT '' FROM Warmup_Historico H WHERE H.ContactKey = G.ContactKey)
+UNION
+SELECT TOP (
+    CASE 
+        WHEN DATEPART(DAY,GETDATE()) = 18 and DATEPART(MONTH,GETDATE()) = 7 THEN 6221
+        WHEN DATEPART(DAY,GETDATE()) = 19 and DATEPART(MONTH,GETDATE()) = 7 THEN 7777
+        WHEN DATEPART(DAY,GETDATE()) = 20 and DATEPART(MONTH,GETDATE()) = 7 THEN 9721
+        WHEN DATEPART(DAY,GETDATE()) = 21 and DATEPART(MONTH,GETDATE()) = 7 THEN 12152
+     else 0 END)
+    HT.ContactKey,
+    HT.Email,
+    HT.Id,
+    HT.Name,
+    HT.MobilePhone,
+    HT.Phone
+ FROM
+   WarmUp_Hotmail HT
+WHERE NOT EXISTS
+    (SELECT '' FROM Warmup_Historico H WHERE H.ContactKey = HT.ContactKey)
+UNION
+SELECT TOP (
+    CASE 
+        WHEN DATEPART(DAY,GETDATE()) = 18 and DATEPART(MONTH,GETDATE()) = 7 THEN 1726
+        WHEN DATEPART(DAY,GETDATE()) = 19 and DATEPART(MONTH,GETDATE()) = 7 THEN 2158
+        WHEN DATEPART(DAY,GETDATE()) = 20 and DATEPART(MONTH,GETDATE()) = 7 THEN 2697
+        WHEN DATEPART(DAY,GETDATE()) = 21 and DATEPART(MONTH,GETDATE()) = 7 THEN 3372
+     else 0 END)
+    Y.ContactKey,
+    Y.Email,
+    Y.Id,
+    Y.Name,
+    Y.MobilePhone,
+    Y.Phone
+ FROM
+   WarmUp_Yahoo Y
+WHERE NOT EXISTS
+    (SELECT '' FROM Warmup_Historico H WHERE H.ContactKey = Y.ContactKey)
+UNION
+SELECT TOP (
+    CASE 
+        WHEN DATEPART(DAY,GETDATE()) = 18 and DATEPART(MONTH,GETDATE()) = 7 THEN 10882
+        WHEN DATEPART(DAY,GETDATE()) = 19 and DATEPART(MONTH,GETDATE()) = 7 THEN 13603
+        WHEN DATEPART(DAY,GETDATE()) = 20 and DATEPART(MONTH,GETDATE()) = 7 THEN 17004
+        WHEN DATEPART(DAY,GETDATE()) = 21 and DATEPART(MONTH,GETDATE()) = 7 THEN 21255
+     else 0 END)
+    O.ContactKey,
+    O.Email,
+    O.Id,
+    O.Name,
+    O.MobilePhone,
+    O.Phone
+ FROM
+   WarmUp_Outros O
+WHERE NOT EXISTS
+    (SELECT '' FROM Warmup_Historico H WHERE H.ContactKey = O.ContactKey)
