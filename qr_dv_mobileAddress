@@ -1,0 +1,22 @@
+SELECT 
+     _ContactID AS ContactID,
+     _MobileNumber AS MobileNumber,
+     _Status AS Status,
+     _Source AS Source,
+     _SourceObjectID AS SourceObjectID,
+     _Priority AS Priority,
+     _Channel AS Channel,
+     _CarrierID AS
+ CarrierID,     _CountryCode AS CountryCode,
+     _CreatedBy AS CreatedBy,
+     _CreatedDate AS CreatedDate,
+     _ModifiedDate AS ModifiedDate,
+     _ModifiedBy AS ModifiedBy,
+     _City AS City,
+     _State AS State,
+     _ZipCode AS ZipCode,
+     _FirstName AS FirstName,
+     _LastName AS LastName,
+     _UTCOffset AS UTCOffset,
+     _IsHonorDST AS IsHonorDST
+FROM _MobileAddress WITH (nolock)
