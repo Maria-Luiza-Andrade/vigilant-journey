@@ -1,0 +1,25 @@
+SELECT x.*
+FROM (
+SELECT 
+LogDate,
+SubscriberKey,
+MobileSubscriptionID,
+SubscriptionDefinitionID,
+MobileNumber,
+OptOutStatusID,
+OptOutMethodID,
+OptOutDate,
+OptInStatusID,
+OptInMethodID,
+OptInDate,
+Source,
+CreatedDate,
+ModifiedDate,
+VALID = ROW_NUMBER() OVER (
+	PARTITION BY SubscriberKey, MobileSubscriptionID, SubscriptionDefinitionID, MobileNumber
+	
+	ORDER BY CreatedDate
+	)
+FROM _SMSSubscriptionLog WITH (nolock) 
+) x
+WHERE x.VALID = 1 
