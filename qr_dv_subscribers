@@ -1,0 +1,5 @@
+SELECT *
+FROM _Subscribers
+WHERE CONVERT(char(10),DateUndeliverable,120) >= CONVERT(char(10),GetDate()-7,120)
+OR CONVERT(char(10),DateJoined,120)        >= CONVERT(char(10),GetDate()-7,120)
+OR CONVERT(char(10),DateUnsubscribed,120)  >= CONVERT(char(10),GetDate()-7,120)
