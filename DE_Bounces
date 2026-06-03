@@ -1,0 +1,61 @@
+SELECT
+    DE_Bounces.AccountID,
+    DE_Bounces.OYBAccountID,
+    DE_Bounces.JobID,
+    DE_Bounces.ListID,
+    DE_Bounces.BatchID,
+    DE_Bounces.SubscriberID,
+    DE_Bounces.SubscriberKey,
+    DE_Bounces.EventDate,
+    DE_Bounces.IsUnique,
+    DE_Bounces.Domain,
+    DE_Bounces.BounceCategoryID,
+    DE_Bounces.BounceCategory,
+    DE_Bounces.BounceTypeID,
+    DE_Bounces.BouncesType,
+    DE_Bounces.SMTPBouncesReason,
+    DE_Bounces.SMTPMessage,
+    DE_Bounces.SMTPCode,
+    DE_Bounces.TriggerDefinitionObjectID,
+    DE_Bounces.TriggeredSendCustomerKey,
+    DE_Bounces.Email,
+    DE_Bounces.BounceSubcategoryID,
+    DE_Bounces.BounceSubcategory,
+    DE_Bounces.FLAG
+
+FROM
+    DE_Bounces
+
+
+JOIN(
+
+SELECT
+    AccountID,
+    OYBAccountID,
+    JobID,
+    ListID,
+    BatchID,
+    SubscriberID,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(SubscriberKey, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS SubscriberKey,
+    EventDate,
+    IsUnique,
+    Domain,
+    BounceCategoryID,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(BounceCategory, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS BounceCategory,
+    BounceSubcategoryID,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(BounceSubcategory, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS BounceSubcategory,
+    BounceTypeID,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(BouncesType, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS BouncesType,
+    LEFT(LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(SMTPBouncesReason, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))), 4000) AS SMTPBouncesReason,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(SMTPMessage, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS SMTPMessage,
+    SMTPCode,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(TriggerDefinitionObjectID, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS TriggerDefinitionObjectID,
+    LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(TriggeredSendCustomerKey, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''), '|', ''))) AS TriggeredSendCustomerKey,
+    ROW_NUMBER() OVER (PARTITION BY JobID, BatchID, SubscriberID ORDER BY NEWID()) AS FLAG
+FROM
+    DE_Bounces
+WHERE
+    EventDate >= GETDATE() - 7
+    )AS T ON DE_Bounces.SubscriberKey = T.SubscriberKey
+WHERE
+    DE_Bounces.FLAG = 1
