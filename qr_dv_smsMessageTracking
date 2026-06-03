@@ -1,0 +1,4 @@
+SELECT * 
+FROM _smsmessagetracking WITH(nolock)
+WHERE CONVERT(char(10), ActionDateTime, 120) >= CONVERT(char(10), GetDate()-54, 120)
+AND (SendJobID IS NOT NULL OR SendJobID <> '')
