@@ -1,0 +1,23 @@
+SELECT x.*
+FROM (
+SELECT
+     _SubscriptionDefinitionID AS SubscriptionDefinitionID,
+     _MobileNumber AS MobileNumber,
+     _OptOutStatusID AS OptOutStatusID,
+     _OptOutMethodID AS OptOutMethodID,
+     _OptOutDate AS OptOutDate,
+     _OptInStatusID AS OptInStatusID,
+     _OptInMethodID AS OptInMethodID,
+     _OptInDate AS OptInDate,
+     _Source AS Source,
+     _CreatedDate AS CreatedDate,
+     _CreatedBy AS CreatedBy,
+     _ModifiedDate AS ModifiedDate,
+     _ModifiedBy AS ModifiedBy,
+     valid = ROW_NUMBER() OVER (
+	PARTITION BY _SubscriptionDefinitionID, _MobileNumber
+ORDER BY _CreatedDate
+	)
+FROM _MobileSubscription WITH (nolock)
+) x 
+WHERE x.valid = 1 
