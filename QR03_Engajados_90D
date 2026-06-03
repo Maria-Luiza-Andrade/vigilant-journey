@@ -1,0 +1,13 @@
+SELECT s.SubscriberKey as SubscriberKey, EmailAddress as Email, c.EventDate as DataEngajamento
+FROM _subscribers s
+JOIN _click c
+ON s.subscriberid = c.subscriberid
+WHERE convert(char(10), c.EventDate, 120) BETWEEN convert(char(10), getdate()-90, 120) AND convert(char(10), getdate()-61, 120)
+
+UNION
+
+SELECT s.SubscriberKey as SubscriberKey, EmailAddress as Email, o.EventDate as DataEngajamento
+FROM _subscribers s
+JOIN _Open o
+ON s.subscriberid = o.subscriberid
+WHERE convert(char(10), o.EventDate, 120) BETWEEN convert(char(10), getdate()-90, 120) AND convert(char(10), getdate()-61, 120)
