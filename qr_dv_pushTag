@@ -1,0 +1,19 @@
+SELECT x.*
+FROM (
+    SELECT 
+    _DeviceID AS DeviceID,
+    _APID AS APID,
+    _Value AS Value,
+    _CreatedDate AS CreatedDate,
+    _CreatedBy AS CreatedBy,
+    _ModifiedDate AS ModifiedDate,
+    _ModifiedBy AS ModifiedBy,
+    VALID = ROW_NUMBER() OVER (
+	PARTITION BY _DeviceID
+	
+	ORDER BY _CreatedDate
+	)
+	
+FROM _PushTag WITH (nolock)
+) x
+WHERE x.VALID = 1
