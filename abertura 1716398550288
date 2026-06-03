@@ -1,0 +1,1 @@
+SELECT "TB_Contatos_Geral"."Email" AS "Email" FROM "LP Webinars Maio" "LP Webinars Maio" RIGHT JOIN "TB_Contatos_Geral" "TB_Contatos_Geral" ON "LP Webinars Maio"."E-mail" = "TB_Contatos_Geral"."Email" WHERE  "LP Webinars Maio"."E-mail" IS NULL
