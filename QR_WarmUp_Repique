@@ -1,0 +1,9 @@
+SELECT TOP 24608
+    d._ContactKey AS ContactKey,
+    d.Email
+FROM
+    Contact_Salesforce d
+WHERE
+    Email IS NOT NULL
+AND
+NOT EXISTS (SELECT '' FROM _Open o WHERE o.SubscriberKey = d._ContactKey)
