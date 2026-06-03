@@ -1,0 +1,9 @@
+SELECT
+    b.SubscriberKey AS ContactKey,
+    s.EmailAddress AS Email
+FROM
+    _Bounce b
+INNER JOIN
+    _Subscribers s ON b.SubscriberKey = s.SubscriberKey
+WHERE
+    b.BounceCategory = 'Hard Bounce'
