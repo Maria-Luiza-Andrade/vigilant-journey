@@ -1,0 +1,4 @@
+SELECT
+    ContactKey, Email, Id, MobilePhone, Name, Phone
+FROM
+    Warmup_Disparo
