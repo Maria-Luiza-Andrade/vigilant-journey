@@ -1,0 +1,30 @@
+SELECT x.*
+FROM (
+SELECT 
+SubscriberID,
+AccountID, 
+OYBAccountID, 
+JobID, 
+ListID, 
+BatchID, 
+SubscriberKey, 
+EventDate, 
+Domain, 
+URL,
+LinkName, 
+LinkContent, 
+IsUnique, 
+TriggererSendDefinitionObjectID, 
+TriggeredSendCustomerKey,
+VALID = ROW_NUMBER() OVER (
+	PARTITION BY JobID, BatchID, SubscriberKey, EventDate, Domain
+	
+	ORDER BY eventdate
+	)
+	
+FROM _Click c WITH (nolock)
+Where CONVERT(char(10),EventDate,120) >= CONVERT(char(10),GetDate()-7,120) 
+
+) x
+WHERE x.VALID = 1
+
