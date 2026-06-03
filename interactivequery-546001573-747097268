@@ -1,0 +1,6 @@
+SELECT rtrim(left(coalesce(CAST(tb.IdContato as char(255)),'<null>'), 255)) as IdContato, rtrim(left(coalesce(CAST(tb.Email as char(255)),'<null>'), 255)) as Email, rtrim(left(coalesce(CAST(tb.DataEngajamento as char(255)),'<null>'), 255)) as DataEngajamento from (
+    SELECT c.Id as IdContato, c.Email as Email, o.EventDate as DataEngajamento,
+    ROW_NUMBER() OVER(PARTITION BY c.Id ORDER BY c.Id DESC) as RowNumber from Contact_Salesforce c
+    LEFT JOIN _Open o ON c.Id = o.SubscriberKey
+) tb
+WHERE tb.RowNumber = 1
