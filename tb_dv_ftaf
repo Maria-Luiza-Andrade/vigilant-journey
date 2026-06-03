@@ -1,0 +1,3 @@
+SELECT *
+FROM _FTAF WITH (nolock) 
+WHERE CONVERT(char(10),transactiontime,120) >= CONVERT(char(10),GetDate()-7,120) 
