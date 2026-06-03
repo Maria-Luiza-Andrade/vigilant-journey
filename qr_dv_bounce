@@ -1,0 +1,32 @@
+SELECT *
+FROM (
+
+SELECT 
+AccountID
+,OYBAccountID
+,JobID
+,ListID
+,BatchID
+,SubscriberID
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(SubscriberKey, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as SubscriberKey
+,EventDate
+,IsUnique
+,Domain
+,BounceCategoryID
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(BounceCategory, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as BounceCategory
+,BounceSubcategoryID
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(BounceSubcategory, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as BounceSubcategory
+,BounceTypeID
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(BounceType, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as BounceType
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(SMTPBounceReason, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as SMTPBounceReason
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(SMTPMessage, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as SMTPMessage
+,SMTPCode
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(TriggererSendDefinitionObjectID, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as TriggererSendDefinitionObjectID
+,LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(TriggeredSendCustomerKey, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ''),'|',''))) as TriggeredSendCustomerKey
+,ROW_NUMBER()OVER(PARTITION BY JobID,BatchID,SubscriberID ORDER BY NEWID()) AS FLAG
+FROM _Bounce
+WHERE 
+CONVERT(char(10),EventDate, 120) >=  CONVERT(char(10), Getdate() - 7, 120)
+
+)T
+WHERE FLAG = 1
